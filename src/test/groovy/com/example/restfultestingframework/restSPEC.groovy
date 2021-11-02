@@ -15,6 +15,8 @@ class restSPEC extends Specification{
 
     def 'accessing external api' () {
 
+        //test
+
 
         given:
         ResponseEntity<String> result = webController.externalTest();
