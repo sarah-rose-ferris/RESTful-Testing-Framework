@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
+import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import spock.lang.Specification
 
@@ -41,9 +42,12 @@ class restSPEC extends Specification{
 
         expect:
         helperFunctions.testIfResponseBodyContains(result,"Emma");
+        and:
+        helperFunctions.testResponseBodyType(result, MediaType.APPLICATION_JSON)
         // result.getBody().contains("Michael");
         and:
         assert helperFunctions.checkStatusCode(result,HttpStatus.OK);
+
         //assert result.getStatusCode() == HttpStatus.OK;
 
 

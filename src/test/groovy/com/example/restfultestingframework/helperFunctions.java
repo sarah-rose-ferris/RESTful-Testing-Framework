@@ -4,6 +4,7 @@ import com.example.restfultestingframework.controller.rest.WebController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.*;
+import org.springframework.http.MediaType;
 
 import java.util.Locale;
 
@@ -35,7 +36,7 @@ public class helperFunctions {
         }
 
     }
-    
+
     public ResponseEntity<String> chooseFunctionWithParam(HttpMethod type,int param){
 
         switch (type) {
@@ -70,6 +71,13 @@ public class helperFunctions {
 
     public boolean testIfResponseBodyContains(ResponseEntity<String> input,String contains){
         return input.getBody().contains(contains);
+    }
+
+    public boolean testResponseBodyType(ResponseEntity<String> input,MediaType type){
+
+        return input.getHeaders().getContentType().isCompatibleWith(type);
+        //slight hack - the format of the content type from the header was different to that of the MediaType;
+        // ie the header contained the charset as well
     }
 
     public boolean checkStatusCode(ResponseEntity<String> input, HttpStatus code){
