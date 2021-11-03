@@ -3,6 +3,7 @@ package com.example.restfultestingframework
 import com.example.restfultestingframework.controller.rest.WebController
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import spock.lang.Specification
@@ -19,14 +20,28 @@ class restSPEC extends Specification{
 
 
         given:
-        ResponseEntity<String> result = helperFunctions.chooseFunction("get");
+        ResponseEntity<String> result = helperFunctions.chooseFunction(HttpMethod.GET);
         //ResponseEntity<String> result = webController.getTest();
 
         expect:
         helperFunctions.testIfResponseBodyContains(result,"Michael");
-       // result.getBody().contains("Michael");// hack to get around parsing JSON
-       // - would need to create a class to store object returned
-        // like https://stackoverflow.com/questions/23674046/get-list-of-json-objects-with-spring-resttemplate?rq=1
+       // result.getBody().contains("Michael");
+        and:
+        assert helperFunctions.checkStatusCode(result,HttpStatus.OK);
+        //assert result.getStatusCode() == HttpStatus.OK;
+
+
+    }
+    def 'accessing external api with custom param' () {
+
+
+        given:
+        ResponseEntity<String> result = helperFunctions.chooseFunctionWithParam(HttpMethod.GET,3);
+        //ResponseEntity<String> result = webController.getTest();
+
+        expect:
+        helperFunctions.testIfResponseBodyContains(result,"Emma");
+        // result.getBody().contains("Michael");
         and:
         assert helperFunctions.checkStatusCode(result,HttpStatus.OK);
         //assert result.getStatusCode() == HttpStatus.OK;
@@ -36,7 +51,7 @@ class restSPEC extends Specification{
 
     def 'post request test' () {
         given:
-        ResponseEntity<String> result = helperFunctions.chooseFunction("post")
+        ResponseEntity<String> result = helperFunctions.chooseFunction(HttpMethod.POST)
         //ResponseEntity<String> result = webController.createUser();
 
         expect:
@@ -51,7 +66,7 @@ class restSPEC extends Specification{
 
     def 'put request test' () {
         given:
-        ResponseEntity<String> result = helperFunctions.chooseFunction("put")
+        ResponseEntity<String> result = helperFunctions.chooseFunction(HttpMethod.PUT)
         //ResponseEntity<String> result = webController.updateUser();
 
         expect:
