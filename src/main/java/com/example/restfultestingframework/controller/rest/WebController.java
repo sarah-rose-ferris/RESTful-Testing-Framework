@@ -19,7 +19,7 @@ public class WebController {
     }
 
     @GetMapping("/fetcher")
-    public ResponseEntity<String> externalTest(){
+    public ResponseEntity<String> getTest(){
         RestTemplate template = new RestTemplate();
 
         ResponseEntity<String> response = template.getForEntity("https://reqres.in/api/users?page=2",String.class);
@@ -47,6 +47,19 @@ public class WebController {
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
         DataGenerator dataGenerator = new DataGenerator();
+        HttpEntity<Map<String, Object>> entity = new HttpEntity<>(dataGenerator.dataforuser(),headers);
+        ResponseEntity<String> response = template.exchange("https://reqres.in/api/users/2", HttpMethod.PUT,entity, String.class);
+        System.out.println(response.toString());
+        return  response;
+    }
+
+    @PutMapping("/updateUserCustom")
+    public ResponseEntity<String> updateUserCustom(DataGenerator dataGenerator){
+        RestTemplate template = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+
         HttpEntity<Map<String, Object>> entity = new HttpEntity<>(dataGenerator.dataforuser(),headers);
         ResponseEntity<String> response = template.exchange("https://reqres.in/api/users/2", HttpMethod.PUT,entity, String.class);
         System.out.println(response.toString());

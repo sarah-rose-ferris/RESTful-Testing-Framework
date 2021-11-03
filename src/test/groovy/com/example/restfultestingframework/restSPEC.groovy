@@ -10,49 +10,56 @@ import spock.lang.Specification
 @SpringBootTest
 class restSPEC extends Specification{
 
-    @Autowired
-    private WebController webController
+    helperFunctions helperFunctions = new helperFunctions();
+
+//    @Autowired
+//    private WebController webController
 
     def 'accessing external api' () {
 
-        //test
-
 
         given:
-        ResponseEntity<String> result = webController.externalTest();
+        ResponseEntity<String> result = helperFunctions.chooseFunction("get");
+        //ResponseEntity<String> result = webController.getTest();
 
         expect:
-        result.getBody().contains("Michael");// hack to get around parsing JSON
+        helperFunctions.testIfResponseBodyContains(result,"Michael");
+       // result.getBody().contains("Michael");// hack to get around parsing JSON
        // - would need to create a class to store object returned
         // like https://stackoverflow.com/questions/23674046/get-list-of-json-objects-with-spring-resttemplate?rq=1
         and:
-        assert result.getStatusCode() == HttpStatus.OK;
+        assert helperFunctions.checkStatusCode(result,HttpStatus.OK);
+        //assert result.getStatusCode() == HttpStatus.OK;
 
 
     }
 
     def 'post request test' () {
         given:
-        ResponseEntity<String> result = webController.createUser();
+        ResponseEntity<String> result = helperFunctions.chooseFunction("post")
+        //ResponseEntity<String> result = webController.createUser();
 
         expect:
         result != null;
 
         and:
-        assert result.getStatusCode() == HttpStatus.CREATED;
+        assert helperFunctions.checkStatusCode(result,HttpStatus.CREATED)
+        //assert result.getStatusCode() == HttpStatus.CREATED;
 
 
     }
 
     def 'put request test' () {
         given:
-        ResponseEntity<String> result = webController.updateUser();
+        ResponseEntity<String> result = helperFunctions.chooseFunction("put")
+        //ResponseEntity<String> result = webController.updateUser();
 
         expect:
         result.body
 
         and:
-        assert result.getStatusCode() == HttpStatus.OK;
+        assert helperFunctions.checkStatusCode(result,HttpStatus.OK)
+        //assert result.getStatusCode() == HttpStatus.OK;
 
 
     }
