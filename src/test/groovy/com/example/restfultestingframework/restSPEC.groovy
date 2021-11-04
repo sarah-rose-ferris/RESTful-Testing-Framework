@@ -12,7 +12,8 @@ import spock.lang.Specification
 @SpringBootTest
 class restSPEC extends Specification{
 
-    helperFunctions helperFunctions = new helperFunctions();
+    @Autowired
+    helperFunctions helperFunctions;
 
 //    @Autowired
 //    private WebController webController
@@ -28,7 +29,7 @@ class restSPEC extends Specification{
         helperFunctions.testIfResponseBodyContains(result,"Michael");
        // result.getBody().contains("Michael");
         and:
-        assert helperFunctions.checkStatusCode(result,HttpStatus.OK);
+        helperFunctions.checkStatusCode(result,HttpStatus.OK);
         //assert result.getStatusCode() == HttpStatus.OK;
 
 
@@ -46,7 +47,7 @@ class restSPEC extends Specification{
         helperFunctions.testResponseBodyType(result, MediaType.APPLICATION_JSON)
         // result.getBody().contains("Michael");
         and:
-        assert helperFunctions.checkStatusCode(result,HttpStatus.OK);
+        helperFunctions.checkStatusCode(result,HttpStatus.OK);
 
         //assert result.getStatusCode() == HttpStatus.OK;
 
@@ -62,7 +63,7 @@ class restSPEC extends Specification{
         result != null;
 
         and:
-        assert helperFunctions.checkStatusCode(result,HttpStatus.CREATED)
+        helperFunctions.checkStatusCode(result,HttpStatus.CREATED)
         //assert result.getStatusCode() == HttpStatus.CREATED;
 
 
@@ -77,7 +78,7 @@ class restSPEC extends Specification{
         result.body
 
         and:
-        assert helperFunctions.checkStatusCode(result,HttpStatus.OK)
+        helperFunctions.checkStatusCode(result,HttpStatus.OK)
         //assert result.getStatusCode() == HttpStatus.OK;
 
 
